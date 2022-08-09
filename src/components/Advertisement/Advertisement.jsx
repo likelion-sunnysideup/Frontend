@@ -1,9 +1,14 @@
 import React from 'react';
-import { AdvertisementBox } from './Advertisement';
+import { 
+  AdContainer, 
+  AdBackground 
+} from './Advertisement';
 
-function Advertisement(props) {
+function Advertisement({ AD }) {
   return (
-    <AdvertisementBox />
+    <AdContainer>
+      <AdBackground>{AD}</AdBackground>
+    </AdContainer>
   );
 }
 
