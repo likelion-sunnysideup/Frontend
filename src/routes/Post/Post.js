@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ReactDatePicker from 'react-datepicker';
 
 /** Post.jsx: 포스팅 페이지*/
 // "포스트 페이지" 전체 화면
@@ -63,11 +64,16 @@ export const PostBtn = styled.button`
   font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
+  background-color: #f3c20b;
+  transition: all 0.7s;
   @media (max-width: 900px) {
     font-size: 0.4em;
   }
-
-  background-color: #f3c20b;
+  transition: all 0.7s;
+  :hover {
+    color: #ffffff;
+    box-shadow: 200px 0 0 0 rgba(0, 0, 0, 0.2) inset;
+  }
 `;
 
 // 포스트 바디 컨테이너
@@ -93,7 +99,7 @@ export const PhotoContainer = styled.div`
 
 // 사진 업로드 영역
 export const UploadBox = styled.div`
-  width: 70%;
+  width: 78%;
   height: 70%;
   border: 2px solid #c9c9c9;
   border-radius: 10px;
@@ -164,11 +170,14 @@ export const UploadLabel = styled.label`
   color: #ffffff;
   border-radius: 6px;
   cursor: pointer;
+  background-color: #0095f6;
   @media (max-width: 900px) {
     font-size: 0.4em;
   }
-
-  background-color: #0095f6;
+  transition: all 0.2s linear;
+  &:hover {
+    opacity: 0.4;
+  }
 `;
 
 // 업로드 버튼
@@ -185,6 +194,10 @@ export const PreviewBox = styled.div`
   width: 80%;
   height: 40%;
   margin: 0 0 0 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
 
   /*background-color: #9055A2;*/
 `;
@@ -214,6 +227,47 @@ export const PreviewHeader = styled.div`
 
   /*background-color: #ffffff;*/
  `;
+
+// 사진 미리보기 컨테이너
+export const PreviewImgContainer = styled.div`
+  width: 90%;
+  height: 40vmin;
+  margin: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px dashed #d9d9d9;
+  /*background-color: navy;*/
+`;
+
+// 사진 미리보기 박스
+export const PreviewImgBox = styled.div`
+  width: 8em;
+  height: 8em;
+  margin: 4%;
+  position: relative;
+
+  background-color: #d9d9d9;
+`;
+
+// 사진 이미지
+export const PreviewImg = styled.img`
+  width: 100%;
+  height: 100%;
+`
+
+// 사진 삭제
+export const ImgDelete = styled.img`
+  width: 0.7em;
+  height: 0.7em;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  /*background-color: #d9d9d9;*/
+`;
 
 // 글쓰기 컨테이너
 export const InputsContainer = styled.div`
@@ -246,7 +300,7 @@ export const InputsTitleBox = styled.div`
   display: flex;
   align-items: center;
 
-  /*background-color: black;*/
+  /*background-color: red;*/
 `;
 
 // "Input" 제목 텍스트
@@ -260,7 +314,7 @@ export const InputsTitle = styled.div`
     font-size: 0.6em;
   }
 
-  /*background-color: white;*/
+  /*background-color: skyblue;*/
 `;
 
 // "Input" 내용 영역
@@ -285,3 +339,109 @@ export const InputContents = styled.input`
   background-color: white;
 `;
 
+// 위치 아이콘
+export const LocationImage = styled.img`
+  width: 16px;
+  height: 20px;
+  cursor: pointer;
+  :& hover {
+    opacity: 0.4;
+  }
+`;
+
+// 위치 아이콘 텍스트
+export const InfoText = styled.div`
+  width: 25%;
+  height: 95%;
+  display: flex;
+  font-size: 0.9em;
+  align-items: center;
+  color: #d9d9d9;
+  margin: 0 0 0 2%;
+  @media (max-width: 900px) {
+    font-size: 0.4em;
+  }
+
+  /*background-color: green;*/
+`;
+
+export const PlusMinusImage = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 0 3% 0 0;
+  cursor: pointer;
+`;
+
+export const TimeSelectBox = styled.div`
+  width: 95%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 3% 0 0 0;
+  /*background-color: red;*/
+`;
+
+export const OutSelectBox = styled.div`
+  width: 95%;
+  height: 48%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1em;
+  align-items: center;
+
+  /*background-color: blue;*/
+`;
+
+export const InSelectBox = styled.div`
+  width: 95%;
+  height: 48%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1em;
+  align-items: center;
+
+  /*background-color: green;*/
+`;
+
+// 시간 선택 
+export const CustomReactDatePicker = styled(ReactDatePicker)`
+  width: 84%;
+  height: 1.8em;
+  border: 1px solid #d9d9d9;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.7em;
+  icon: black;
+`;
+
+export const TimeText = styled.div`
+  width: 32%;
+  height: 80%;
+  @media (max-width: 900px) {
+    font-size: 0.4em;
+  }
+  /*background-color: skyblue;*/
+`;
+
+export const OutTimeSelect = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*background-color: yellow;*/
+`;
+
+export const InTimeSelect = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*background-color: yellow;*/
+`;

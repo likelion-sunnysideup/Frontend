@@ -22,6 +22,11 @@ export const CenterPart = styled.div`
   flex: 1;
 `;
 
+/*   
+position: relative;
+padding-bottom: 100%;
+*/
+
 export const BarPart = styled.div`
   width: 10px;
   height: 90vh;
@@ -29,8 +34,3 @@ export const BarPart = styled.div`
   border-radius: 0 0 4px 4px;
   background-color: #f3b85e;
 `;
-
-/*   
-position: relative;
-padding-bottom: 100%;
-*/

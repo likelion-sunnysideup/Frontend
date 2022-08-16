@@ -14,9 +14,32 @@ export const AdContainer = styled.div`
 
 // 광고 백그라운드
 export const AdBackground = styled.div`
-  width: 94%;
+  width: 93%;
   height: 97%;
   border-radius: 10px;
+  border: 4px solid #2ac1bc;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 
-  background-color: #c9c9c9;
+  background-color: #ffffff;
+`;
+
+export const AdText = styled.div`
+  width: 80%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.7em;
+  font-family: 'BMHannaPro';
+
+  /*background-color: orange;*/
+`;
+
+export const AdImg = styled.img`
+  width: 80px;
+  height: 80px;
+
+  /*background-color: #c0c0c0;*/
 `;
