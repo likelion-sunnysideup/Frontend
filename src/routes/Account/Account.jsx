@@ -7,6 +7,7 @@ import {
 import Advertisement from './../../components/Advertisement/Advertisement.jsx';
 import Cloth from './../../components/Cloth/Cloth.jsx';
 import ScrollHorizontal from 'react-scroll-horizontal';
+import Week from '../Week/Week.jsx';
 
 const accountList = [
   { 

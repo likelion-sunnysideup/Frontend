@@ -119,9 +119,10 @@ export const StyleCheckBtn = styled.button`
   @media (max-width: 1000px) {
     font-size: 0.4em;
   }
-  transition: all 0.2s linear;
-  &:hover {
-    color: #F3C20B;
+  transition: all 0.7s;
+  :hover {
+    color: #ffffff;
+    box-shadow: 200px 0 0 0 rgba(0, 0, 0, 0.2) inset;
   }
 `;
 
@@ -138,18 +139,18 @@ export const MainTodayWeatherContainer = styled.div`
 
 // 메인 > 오늘 날씨 백그라운드
 export const MainTodayWeatherBackground = styled.div`
-  width: 80%;
-  height: 88%;
+  width: 75%;
+  height: 85%;
   border-radius: 10px;
   display: flex;
-
+  padding: 1% 3% 1% 3%;
 
   background-color: #ffffff;
 `;
 
 // 메인 > 오늘 날씨 > 아이콘 컨테이너
 export const MainIconContainer = styled.div`
-  width: 40%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -160,24 +161,25 @@ export const MainIconContainer = styled.div`
 
 // 메인 > 오늘 날씨 > 아이콘 박스
 export const MainIconBox = styled.div`
-  width: 60%;
+  width: 65%;
   height: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 0 0 10%;
 
-  /*background-color: #ffffff;*/
+  /*background-color: green;*/
 `;
 
 // 메인 > 오늘 날씨 > 아이콘 이미지
 export const MainIconImg = styled.img`
-  width: 5vmin;
-  height: 5vmin;
+  width: 6.5vmin;
+  height: 6.5vmin;
 `;
 
 // 메인 > 오늘 날씨 > 날씨 정보
 export const MainInfoContainer = styled.div`
-  width: 60%;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -188,16 +190,29 @@ export const MainInfoContainer = styled.div`
 // 메인 > 오늘 날씨 > 요일 + 지역
 export const MainDayCityBox = styled.div`
   width: 100%;
-  height: 20%;
-
+  height: 25%;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 1200px) {
+    font-size: 0.4em;
+  }
   /*background-color: red;*/
 `;
 
 // 메인 > 오늘 날씨 > 온도
 export const MainTemperatureBox = styled.div`
   width: 100%;
-  height: 40%;
-
+  height: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6em;
+  font-weight: bold;
+  @media (max-width: 1200px) {
+    font-size: 1em;
+  }
   /*background-color: blue;*/
 `;
 
@@ -205,7 +220,13 @@ export const MainTemperatureBox = styled.div`
 export const MainStateBox = styled.div`
   width: 100%;
   height: 20%;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  @media (max-width: 1200px) {
+    font-size: 0.4em;
+  }
   /*background-color: orange;*/
 `;
 
@@ -213,7 +234,13 @@ export const MainStateBox = styled.div`
 export const MainRainfallBox = styled.div`
   width: 100%;
   height: 20%;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  @media (max-width: 1200px) {
+    font-size: 0.4em;
+  }
   /*background-color: gray;*/
 `;
 
@@ -236,34 +263,63 @@ export const StyleImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
 
   /*background-color: #C5E99B;*/
 `;
 
+export const StyleImgClothes = styled.div`
+  width: 45%;
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /*background-color: orange;*/
+`;
+
+export const StyleImgShoes = styled.div`
+  width: 35%;
+  height: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*background-color: aqua;*/
+`;
+
 // 스타일 추천 이미지 
 export const StyleImg = styled.img`
-  width: 8vmin;
-  height: 8vmin;
+  width: 9vmin;
+  height: 9vmin;
 `;
 
 // 스타일 추천 텍스트 박스
 export const StyleTextBox = styled.div`
-  width: 60%;
+  width: 70%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: pre-wrap;
 
   /*background-color: #548687;*/
 `;
 
 // 스타일 추천 텍스트
 export const StyleText = styled.div`
-  font-size: 1.2em;
+  display: flex;
+  font-size: 1.3em;
+  display: flex;
+  width: 100%;
+  height: 45%;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 1000px) {
     font-size: 0.4em;
   }
+  /*background-color: navy;*/
 `;
 

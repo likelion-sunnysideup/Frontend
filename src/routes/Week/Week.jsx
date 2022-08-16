@@ -1,5 +1,6 @@
+/*
 // 날씨 사이드 바
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   SidebarPart,
   SidebarHeaderContatiner,
@@ -30,45 +31,55 @@ import {
   DayMax,
 } from './Week';
 import axios from 'axios';
-import useGeolocation from 'react-hook-geolocation';
 
-import sunImage from '../../styles/assets/sun.png'
+import sunImage from '../../styles/assets/01d.png'
 import searchImage from  '../../styles/assets/search.png'
 
-const weatherData = [
+const today = new Date();
+let day1 = new Date(today).toDateString().slice(0, 4);
+let day2 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+let day3 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+let day4 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+let day5 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+let day6 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+let day7 = new Date(today.setDate(today.getDate() + 1)).toDateString().slice(0, 4);
+
+const weekData = [
   {
     id: 0,
-    day: 'SUN'
+    day: day1,
   },
   {
     id: 1,
-    day: 'MON'
+    day: day2,
   },
   {
     id: 2,
-    day: 'TUE'
+    day: day3,
   },
   {
     id: 3,
-    day: 'WEN'
+    day: day4,
   },
   {
     id: 4,
-    day: 'THU'
+    day: day5,
   },
   {
     id: 5,
-    day: 'FRI'
+    day: day6,
   },
   {
     id: 6,
-    day: 'SAT'
+    day: day7,
   },
 ]
 
-function Week(props) {
+function Week() {
+  // 로딩 관리
   const [loading, setLoading] = useState(true);
 
+  // 검색 관리
   const [search, setSearch] = useState('');
   const onSearch = (e) => {
     setSearch(e.target.value);
@@ -80,45 +91,53 @@ function Week(props) {
     setSelected(selected); 
   };
 
-  // 날씨 관리
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+  // 주소 관리
+  const KAKAO_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
 
-  const [cityName, setCityName] = useState();
-  const [weatherInfo, setWeatherInfo] = useState([]);
+  const [lat, setLat] = useState();
+  const [lon, setLon] = useState();
+  const [addressName, setAddressName] = useState();
+
+  const getAddress = async() => {
+    await axios
+    .get(`https://dapi.kakao.com/v2/local/search/address.json?query=${search}`,
+    {
+      headers: { Authorization: `KakaoAK ${KAKAO_API_KEY}`, },
+    },
+    )
+    .then((response) => {
+      console.log(response.data);
+      setLat(response.data.documents[0].y);
+      setLon(response.data.documents[0].x);
+      setAddressName(response.data.documents[0].address_name);
+    })
+    .catch((error) =>{
+      console.log("============================getAddress============================")
+      console.log(error);
+    })
+  }
+
+  // 날씨 관리
+  const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+
+  const [weatherData, setWeatherData] = useState();
   const [current, setCurrent] = useState([]);
   const [currentWeather, setCurrentWeather] = useState([]);
   const [daily, setDaily] = useState([]);
-
-  const geolocation = useGeolocation();
-  const latitude = geolocation.latitude;
-  const longitude = geolocation.longitude;
-
+  
   const getWeather = async() => {
     await axios
-    .get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=kr`)
-    .then((result) => {
-      console.log(result.data);
-      setWeatherInfo(result.data);
-      setCurrent(result.data.current);
-      setCurrentWeather(result.data.current.weather[0]);
-      setDaily(result.data.daily[0]);
+    .get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`)
+    .then((res) => {
+      console.log(res.data);
+      setWeatherData(res.data);
+      setDaily(weatherData.daily);
+      setCurrent(weatherData.current);
+      setCurrentWeather(current.weather[0]);
       setLoading(false);
     })
     .catch((error)=> {
-      console.log("==========getWeather==========");
-      console.log(error);
-    })
-  };
-
-  const getCity = async() => {
-    await axios
-    .get(`http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-    .then((result) => {
-      console.log(result.data);
-      setCityName(result.data[0].local_names.ko);
-    })
-    .catch((error)=> {
-      console.log("==========getCity==========");
+      console.log("============================getWeather============================");
       console.log(error);
     })
   };
@@ -128,7 +147,7 @@ function Week(props) {
       <SidebarPart>
         <SidebarHeaderContatiner>
           <SidebarEmogiBackground>
-              <SidebarEmogi src={sunImage} />
+              <SidebarEmogi src={sunImage}/>
           </SidebarEmogiBackground>
           
           <SidebarInfoBackground>
@@ -145,8 +164,8 @@ function Week(props) {
               <IconBackground>
                 <SearchImg 
                   onClick={() => {
+                    getAddress();
                     getWeather();   
-                    getCity();
                   }}
                   src={searchImage}
                 ></SearchImg>
@@ -164,40 +183,48 @@ function Week(props) {
             null
           ) : (
             <>
-              <CurrentCity>{cityName}</CurrentCity>
+              <CurrentCity>{addressName}</CurrentCity>
               <CurrentTemp>{current.temp}℃</CurrentTemp>
               <CurrentState>{currentWeather.description}</CurrentState>
+            <CurrentTempBox>
+              <CurrentMin>최저 {daily[0].temp.min}℃</CurrentMin>
+              <CurrentMax>최고 {daily[0].temp.max}℃</CurrentMax>
+            </CurrentTempBox>
             </>
           )}
-            <CurrentTempBox>
-              <CurrentMax></CurrentMax>
-              <CurrentMin></CurrentMin>
-            </CurrentTempBox>
           </SidebarTodayWeatherBackground>
         </SidebarTodayWeatherContainer>
 
         <WeekWeatherContainer>
           <WeekWeatherBackground>
-              { weatherData.map((element) => (
+          { loading ? (
+            null
+          ) : (
+            <>
+              { weekData.map((e) => (
                 <DayWeatherBox 
-                  key={element?.id} 
-                  onClick={() => onSelectedDay(element?.id)}
-                  isSelected={element?.id === selected}
+                  key={e?.id} 
+                  onClick={() => {
+                    onSelectedDay(e?.id);   
+                  }}
+                  isSelected={e?.id === selected}
                 >
-                  <DayText>{element?.day}</DayText>
-                  <DayIcon></DayIcon>
+                  <DayText>{e?.day}</DayText>
+                  <DayIcon src={`http://openweathermap.org/img/wn/${daily[e?.id].weather[0].icon}@2x.png`}/>
                   <DayTempBox>
-                    <DayMin></DayMin>
-                    <DayMax></DayMax>
+                    <DayMin>최저 {daily[e?.id].temp.min}℃</DayMin>
+                    <DayMax>최고 {daily[e?.id].temp.max}℃</DayMax>
                   </DayTempBox>
                 </DayWeatherBox>
               ))}
+              </>
+            )}
           </WeekWeatherBackground>
         </WeekWeatherContainer>
-
       </SidebarPart>
     </>
   );
 }
 
 export default Week;
+*/

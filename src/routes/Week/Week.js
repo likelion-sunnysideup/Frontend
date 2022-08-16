@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'; // ok
 
 /** Week.js: 주간 날씨 정보(사이드 바) */
 // "사이드 바" 전체 화면
@@ -23,7 +23,6 @@ export const SidebarHeaderContatiner = styled.div`
 `;
 
 // 이모지 백그라운드
-// 3em * 3em
 export const SidebarEmogiBackground = styled.div`
   width: 28px;
   height: 28px;
@@ -35,14 +34,12 @@ export const SidebarEmogiBackground = styled.div`
 `;
 
 // 해 이미지
-// 30px * 30px
 export const SidebarEmogi = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 3.5em;
+  height: 3.5em;
 `;
 
 // 사이드바 사용 방법 백그라운드
-// 13em * 3em
 export const SidebarInfoBackground = styled.div`
   width: 13em;
   height: 3em; 
@@ -62,7 +59,6 @@ export const SidebarInfoText = styled.div`
 `;
 
 // 위치 검색 컨테이너
-// 100% * 2em
 export const SearchbarContainer = styled.div`
   width: 100%;
   height: 5%;
@@ -74,7 +70,6 @@ export const SearchbarContainer = styled.div`
 `;
 
 // 위치 검색 백그라운드
-// 270px * 1.5em
 export const SearchbarBackground = styled.div`
   width: 90%;
   height: 75%;
@@ -89,7 +84,6 @@ export const SearchbarBackground = styled.div`
 `;
 
 // 돋보기 백그라운드
-// 20px * 20px
 export const IconBackground = styled.div`
   width: 20px;
   height: 20px;
@@ -98,7 +92,6 @@ export const IconBackground = styled.div`
 `;
 
 // 돋보기 이미지
-// 20px * 20px
 export const SearchImg = styled.img`
   width: 15px;
   height: 15px;
@@ -107,7 +100,6 @@ export const SearchImg = styled.img`
 `;
 
 // 위치 검색 인풋창
-// 16em * 1.2em
 export const LocationInput = styled.input`
   width: 70%;
   height: 1.2em;
@@ -122,7 +114,6 @@ export const LocationInput = styled.input`
 `;
 
 // 사이드바 오늘 날씨 정보 컨테이너
-// 100% * 10em
 export const SidebarTodayWeatherContainer = styled.div`
   width: 100%;
   height: 20%;
@@ -135,7 +126,6 @@ export const SidebarTodayWeatherContainer = styled.div`
 `;
 
 // 사이드바 오늘 날씨 정보 
-// 200px * 10px (임시로 넣어 놓음)
 export const SidebarTodayWeatherBackground = styled.div`
   width: 80%;
   height: 90%;
@@ -148,19 +138,22 @@ export const SidebarTodayWeatherBackground = styled.div`
 
 export const CurrentCity = styled.div`
   width: 80%;
-  height: 20%;  
+  height: 20%;
+  font-size: 1.1em;  
   display: flex;
   align-items: center;
   justify-content: center;
-
+  @media (max-width: 900px) {
+    font-size: 0.9em;
+  }
   /*background-color: green;*/
 `;
 
 export const CurrentTemp = styled.div`
   width: 80%;
-  height: 40%;
+  height: 35%;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 1.8em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,6 +164,7 @@ export const CurrentTemp = styled.div`
 export const CurrentState = styled.div`
   width: 80%;
   height: 20%;
+  font-size: 0.9em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,37 +173,30 @@ export const CurrentState = styled.div`
 `;
 
 export const CurrentTempBox = styled.div`
-  width: 80%;
+  width: 100%;
   height: 40%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
   /*background-color: red;*/
 `;
 
+export const CurrentMin = styled.div`
+  font-weight: bold;
+  font-size: 0.8em;
+  
+  /*background-color: yellow;*/
+`;
+
 export const CurrentMax = styled.div`
-  width: 40%;
-  height: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8em;
 
   /*background-color: blue;*/
 `;
 
-export const CurrentMin = styled.div`
-  width: 40%;
-  height: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /*background-color: yellow;*/
-`;
-
 // 주간 날씨 컨테이너
-// 100% * 20em
 export const WeekWeatherContainer = styled.div`
   width: 100%;
   height: 60%;
@@ -221,7 +208,6 @@ export const WeekWeatherContainer = styled.div`
 `;
 
 // 주간 날씨
-// 200px * 20px (임시로 넣어 놓음)
 export const WeekWeatherBackground = styled.div`
   width: 85%;
   height: 93%;
@@ -254,20 +240,24 @@ export const DayWeatherBox = styled.div`
 
 // 요일 별 텍스트
 export const DayText = styled.div`
-  width: 30%;
+  width: 18%;
   height: 80%;
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  justify-content: flex-start;
+  font-size: 1.1em;
+  font-weight: bold;
+  @media (max-width: 900px) {
+    font-size: 0.9em;
+  }
   /*background-color: orange;*/
 `;
 
 // 요일 별 아이콘
-export const DayIcon = styled.div`
-  width: 20%;
-  height: 80%;
-
+export const DayIcon = styled.img`
+  width: 3em;
+  height: 3em;
+  
   /*background-color: green;*/
 `;
 
@@ -279,22 +269,22 @@ export const DayTempBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  @media (max-width: 900px) {
+    font-size: 0.4em;
+  }
   /*background-color: red;*/
 `;
 
 // 요일 별 최저 온도
 export const DayMin = styled.div`
-  width: 80%;
-  height: 50%;
+  font-size: 0.8em;
 
-  /*background-color: black;*/
+  /*background-color: aqua;*/
 `;
 
 // 요일 별 최고 온도
 export const DayMax = styled.div`
-  width: 80%;
-  height: 50%;
+  font-size: 0.8em;
 
   /*background-color: skyblue;*/
 `;

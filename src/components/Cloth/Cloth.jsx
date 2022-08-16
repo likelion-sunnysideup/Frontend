@@ -86,9 +86,10 @@ function Cloth() {
 
   const navigate = useNavigate();
 
-  const [save, setSave] = useState(false);
-  const onSave = () => {
-    setSave(!save); 
+  const [save, setSave] = useState();
+  const onSave = (btnID) => {
+    setSave(!save);
+    console.log(btnID);
   };
 
   const goShowPost = () => {
@@ -99,28 +100,25 @@ function Cloth() {
     <>
       <Filter/>
       <ClothesContainer>
-        {clothList.map((element) => (
-          <ClothBackground key={element?.id}>
+        {clothList.map((e) => (
+          <ClothBackground key={e?.id}>
             <ClothImg 
               src={clothImg}
               onClick={goShowPost}
             />
             <SaveBtnBox
-              key={element?.id}
-              onClick={onSave}
+              key={e?.id}
+              active={save === e?.id}
+              onClick={() => onSave(e?.id)}
             >
-            { save ? (
-              <SaveBtnImg src={fullBtn}/> 
-              ) : (
-              <SaveBtnImg src={emptyBtn}/>
-            )}
+            <SaveBtnImg src={emptyBtn}/>
             </SaveBtnBox>
             <ClothInfo>
-              {element?.temperature}
+              {e?.temperature}
               <br/>
-              {element?.top}
+              {e?.top}
               <br/>
-              {element?.bottom}
+              {e?.bottom}
             </ClothInfo>
           </ClothBackground>
         ))}

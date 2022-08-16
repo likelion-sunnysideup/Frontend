@@ -7,3 +7,8 @@
   font-family: 'NotoSansKR';
   src: url('./NotoSansKR-Regular.otf');
 }
+
+@font-face {
+  font-family: 'BMHannaPro';
+  src: url('./BMHANNAPro.ttf');
+}
