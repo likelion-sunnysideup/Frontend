@@ -120,6 +120,7 @@ function App(props) {
       setLat(response.data.documents[0].y);
       setLon(response.data.documents[0].x);
       setAddressName(response.data.documents[0].address_name);
+      getWeather();   
     })
     .catch((error) =>{
       console.log("============================getAddress============================")
@@ -150,7 +151,7 @@ function App(props) {
     })
   };
 
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
 
   return (
         <GlobalPart>
@@ -179,7 +180,6 @@ function App(props) {
                         <SearchImg 
                           onClick={() => {
                             getAddress();
-                            getWeather();   
                           }}
                           src={searchImage}
                         ></SearchImg>

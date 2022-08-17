@@ -33,7 +33,9 @@ export const AdText = styled.div`
   justify-content: center;
   font-size: 3.7em;
   font-family: 'BMHannaPro';
-
+  @media (max-width: 1200px) {
+    font-size: 2.3em;
+  }
   /*background-color: orange;*/
 `;
 
