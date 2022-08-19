@@ -141,6 +141,7 @@ function App(props) {
       console.log(error);
     })
   };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (geolocation) => {
@@ -161,7 +162,9 @@ function App(props) {
     );
   }, []);
   
+  // 위치
   const [addressName, setAddressName] = useState();
+  const [currentCity, setCurrentCity] = useState();
 
   const getLocationBySearch = async() => {
     try {
@@ -177,6 +180,7 @@ function App(props) {
         "lon" : response.data.documents[0].x,
         "lat" : response.data.documents[0].y,
       });
+      setAddressName(response.data.documents[0].address_name);
     } catch(error) {
       console.log("============================getAddress============================")
       console.log(error);
@@ -186,6 +190,20 @@ function App(props) {
 
   // 날씨 관리
   const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+  
+  /*
+  const getCurrent = async() => {
+    await axios 
+    .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&lang=kr`)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.log("============================getCurrent============================")
+      console.log(error)
+    })
+  }
+  */
 
   const [currentWeather, setCurrentWeather] = useState([]);
   const [daily, setDaily] = useState([]);
@@ -202,7 +220,7 @@ function App(props) {
     } catch(error) {
       console.log("============================getWeather============================");
       console.log(error);
-    })
+    }
   };
   
   const [login, setLogin] = useState(false);
@@ -226,7 +244,6 @@ function App(props) {
                     </SidebarInfoText>
                   </SidebarInfoBackground>
                 </SidebarHeaderContatiner>
-
                 <SearchbarContainer>
                   <SearchbarBackground>
                       <IconBackground>
@@ -244,13 +261,15 @@ function App(props) {
                       />
                   </SearchbarBackground>
                 </SearchbarContainer>
-                {/* <SidebarTodayWeatherContainer>
+                
+                {/** 사이드 바
+                <SidebarTodayWeatherContainer>
                   <SidebarTodayWeatherBackground>
                   { loading ? (
                     null
                   ) : (
                     <>
-                      <CurrentCity>{addressName}</CurrentCity>
+                      <CurrentCity>현재 위치 {addressName}</CurrentCity>
                       <CurrentTemp>{temp}℃</CurrentTemp>
                       <CurrentState>{currentWeather.description}</CurrentState>
                       <CurrentTempBox>
@@ -260,7 +279,8 @@ function App(props) {
                     </>
                   )}
                   </SidebarTodayWeatherBackground>
-                </SidebarTodayWeatherContainer> */}
+                </SidebarTodayWeatherContainer>
+                */}
 
                 <WeekWeatherContainer>
                   <WeekWeatherBackground>
@@ -291,7 +311,7 @@ function App(props) {
               </SidebarPart>
               <BarPart/>
               <Routes>
-                <Route exact path="/" element={<Main lat={location.lat} lon={location.lon} addressName={addressName}/>}></Route> {/** 메인 화면 */}
+                <Route exact path="/main" element={<Main lat={location.lat} lon={location.lon} addressName={addressName}/>}></Route> {/** 메인 화면 */}
                 <Route path="/post" element={<Post />}></Route> {/** 포스트 생성 로직 */}
                 <Route path="/cloth/:id" element={<ShowPost />}></Route> {/** 포스트 하나의 데이터 */}
                 <Route path="/save" element={<Save />}></Route> {/** (타계정) 포스트 (저장) 리스트 */}
