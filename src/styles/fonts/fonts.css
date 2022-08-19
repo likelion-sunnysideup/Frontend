@@ -12,3 +12,8 @@
   font-family: 'BMHannaPro';
   src: url('./BMHANNAPro.ttf');
 }
+
+@font-face {
+  font-family: 'BMJUA';
+  src: url('./BMJUA.ttf');
+}

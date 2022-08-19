@@ -9,7 +9,6 @@ import {
   SaveBtnImg,
 } from './Cloth';
 
-import Filter from '../Filter/Filter.jsx';
 
 import clothImg from '../../styles/assets/bonobono.jpg';
 import Loading from '../../components/Loading/Loading.jsx';
@@ -98,7 +97,6 @@ function Cloth() {
 
   return (
     <>
-      <Filter/>
       <ClothesContainer>
         {clothList.map((e) => (
           <ClothBackground key={e?.id}>

@@ -38,6 +38,7 @@ import Save from './routes/Save/Save.jsx';
 import Account from './routes/Account/Account.jsx';
 import ScrollUp from './components/ScrollUp/ScrollUp.jsx';
 import Login from './routes/Login/Login.jsx';
+
 import axios from 'axios';
 
 import sunImage from '../src/styles/assets/sun.png'
@@ -150,9 +151,7 @@ function App(props) {
       console.log(error);
     })
   };
-
-  const [login, setLogin] = useState(true);
-
+  const [login, setLogin] = useState(false);
   return (
         <GlobalPart>
         { login ? (
@@ -238,7 +237,7 @@ function App(props) {
               </SidebarPart>
               <BarPart/>
               <Routes>
-                <Route exact path="/" element={<Main lat={lat} lon={lon} addressName={addressName} temp={temp}/>}></Route> {/** 메인 화면 */}
+                <Route exact path="/main" element={<Main lat={lat} lon={lon} addressName={addressName} temp={temp}/>}></Route> {/** 메인 화면 */}
                 <Route path="/post" element={<Post />}></Route> {/** 포스트 생성 로직 */}
                 <Route path="/cloth/:id" element={<ShowPost />}></Route> {/** 포스트 하나의 데이터 */}
                 <Route path="/save" element={<Save />}></Route> {/** (타계정) 포스트 (저장) 리스트 */}
@@ -248,9 +247,9 @@ function App(props) {
             </CenterPart>
           </>
           ):(
-            <>
-              <Login></Login>
-            </>
+            <Routes>
+              <Route path="/" element={<Login setLogin={setLogin}/>}></Route>
+            </Routes>
           )}
         </GlobalPart>
   );
