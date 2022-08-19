@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useGeolocation from 'react-hook-geolocation';
 import { Routes, Route } from 'react-router-dom';
 import { GlobalPart, CenterPart, BarPart } from './styles/css/styledComponents';
 import { 
@@ -104,27 +105,82 @@ function App(props) {
   // 주소 관리
   const KAKAO_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
 
-  const [lat, setLat] = useState();
-  const [lon, setLon] = useState();
-  const [addressName, setAddressName] = useState();
+  const [location, setLocation] = useState({
+    "address_name" : "기본값",
+    "lon" : 0,
+    "lat" : 0,
+  });
+  
+  useEffect(() => {
+    console.log(location);
+    getWeather();
+  }, [location]);
 
-  const getAddress = async() => {
+  const getLocationByGps = async(lon, lat) => {
     await axios
-    .get(`https://dapi.kakao.com/v2/local/search/address.json?query=${search}`,
-    {
+    .get( `https://dapi.kakao.com/v2/local/geo/coord2address.json?input_coord=WGS84&x=${lon}&y=${lat}`,
+    { 
       headers: { Authorization: `KakaoAK ${KAKAO_API_KEY}`, },
     },
     )
     .then((response) => {
-      console.log(response.data);
-      setLat(response.data.documents[0].y);
-      setLon(response.data.documents[0].x);
-      setAddressName(response.data.documents[0].address_name);
+      setLocation({
+        "address_name" : `${response.data.documents[0].address.region_1depth_name} ${response.data.documents[0].address.region_2depth_name}`,
+        "lon" : lon,
+        "lat" : lat,
+      });
     })
-    .catch((error) =>{
-      console.log("============================getAddress============================")
+    .catch((error) => {
+      setLocation({
+        "address_name" : "서울",
+        "lon" : "37.541",
+        "lat" : "126.986",
+      });
+      console.log("====================getLocation======================")
       console.log(error);
     })
+  };
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (geolocation) => {
+        getLocationByGps(geolocation.coords.longitude, geolocation.coords.latitude);
+      }, 
+      (error) => {
+        setLocation({
+          "address_name" : "서울",
+          "lon" : "37.541",
+          "lat" : "126.986",
+        });
+      }, 
+      {
+        enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 0
+      }
+    );
+  }, []);
+  
+  const [addressName, setAddressName] = useState();
+
+  const getLocationBySearch = async() => {
+    try {
+      const response = await axios.get(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${search}`,
+        {
+          headers: { Authorization: `KakaoAK ${KAKAO_API_KEY}`, },
+        },
+      );
+      console.log(response.data);
+      setLocation({
+        "address_name" : response.data.documents[0].address_name,
+        "lon" : response.data.documents[0].x,
+        "lat" : response.data.documents[0].y,
+      });
+    } catch(error) {
+      console.log("============================getAddress============================")
+      console.log(error);
+    }
+    console.log("서");
   }
 
   // 날씨 관리
@@ -135,20 +191,18 @@ function App(props) {
   const [temp, setTemp] = useState([]);
   
   const getWeather = async() => {
-    await axios
-    .get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`)
-    .then((res) => {
-      console.log(res.data);
-      setTemp(res.data.current.temp);
-      setDaily(res.data.daily);
-      setCurrentWeather(res.data.current.weather[0]);
+    try {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&appid=${WEATHER_API_KEY}&units=metric&lang=kr`);
+      // console.log(response.data);
+      setTemp(response.data.current.temp);
+      setDaily(response.data.daily);
+      setCurrentWeather(response.data.current.weather[0]);
       setLoading(false);
-    })
-    .catch((error)=> {
+    } catch(error) {
       console.log("============================getWeather============================");
       console.log(error);
-    })
-  };
+    }
+};
 
   const [login, setLogin] = useState(false);
 
@@ -177,9 +231,8 @@ function App(props) {
                   <SearchbarBackground>
                       <IconBackground>
                         <SearchImg 
-                          onClick={() => {
-                            getAddress();
-                            getWeather();   
+                          onClick={async() => {
+                            await getLocationBySearch();
                           }}
                           src={searchImage}
                         ></SearchImg>
@@ -191,7 +244,7 @@ function App(props) {
                       />
                   </SearchbarBackground>
                 </SearchbarContainer>
-                <SidebarTodayWeatherContainer>
+                {/* <SidebarTodayWeatherContainer>
                   <SidebarTodayWeatherBackground>
                   { loading ? (
                     null
@@ -200,14 +253,14 @@ function App(props) {
                       <CurrentCity>{addressName}</CurrentCity>
                       <CurrentTemp>{temp}℃</CurrentTemp>
                       <CurrentState>{currentWeather.description}</CurrentState>
-                    <CurrentTempBox>
-                      <CurrentMin>최저 {daily[0].temp.min}℃</CurrentMin>
-                      <CurrentMax>최고 {daily[0].temp.max}℃</CurrentMax>
-                    </CurrentTempBox>
+                      <CurrentTempBox>
+                        <CurrentMin>최저 {daily[0].temp.min}℃</CurrentMin>
+                        <CurrentMax>최고 {daily[0].temp.max}℃</CurrentMax>
+                      </CurrentTempBox>
                     </>
                   )}
                   </SidebarTodayWeatherBackground>
-                </SidebarTodayWeatherContainer>
+                </SidebarTodayWeatherContainer> */}
 
                 <WeekWeatherContainer>
                   <WeekWeatherBackground>
@@ -238,7 +291,7 @@ function App(props) {
               </SidebarPart>
               <BarPart/>
               <Routes>
-                <Route exact path="/" element={<Main lat={lat} lon={lon} addressName={addressName} temp={temp}/>}></Route> {/** 메인 화면 */}
+                <Route exact path="/" element={<Main lat={location.lat} lon={location.lon} addressName={addressName}/>}></Route> {/** 메인 화면 */}
                 <Route path="/post" element={<Post />}></Route> {/** 포스트 생성 로직 */}
                 <Route path="/cloth/:id" element={<ShowPost />}></Route> {/** 포스트 하나의 데이터 */}
                 <Route path="/save" element={<Save />}></Route> {/** (타계정) 포스트 (저장) 리스트 */}
