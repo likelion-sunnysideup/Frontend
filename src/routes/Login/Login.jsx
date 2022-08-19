@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   LoginPart,
+  SmileBox,
   TopLineStyle,
-  BotLineStyle,
-  BotLineStyle2,
+  BotBigLineStyle,
+  BotSmallLineStyle,
   TitleContainer,
   TitleBox,
   WebTitle,
@@ -14,19 +16,21 @@ import {
   WebInfo,
   LoginBtnBox,
   LoginBtn,
-  LeftEyeStyle,
-  RightEyeStyle,
-  SmileStyle,
 } from './Login';
 
-function Login(props) {
+function Login({ setLogin }) {
+  const navigate = useNavigate();
+
+  const goLogin = () => {
+    navigate('/main')
+    setLogin(true);
+  }
+
   return (
     <>
       <LoginPart>
         <TitleContainer>
-            <SmileStyle/>
-            <LeftEyeStyle/>
-            <RightEyeStyle/>
+          <SmileBox>{':)'}</SmileBox>
           <TopLineStyle/>
           <TitleBox>
             <WebTitle>
@@ -39,10 +43,10 @@ function Login(props) {
         <LoginContainer>
           <WebInfo>"오늘의 날씨에 맞는 옷차림을 추천해드려요"</WebInfo>
           <LoginBtnBox>
-            <LoginBtn>LOGIN</LoginBtn>
+              <LoginBtn onClick={goLogin}>LOGIN</LoginBtn>
           </LoginBtnBox>
-          <BotLineStyle/>
-          <BotLineStyle2/>
+          <BotBigLineStyle/>
+          <BotSmallLineStyle/>
         </LoginContainer>
       </LoginPart>
     </>

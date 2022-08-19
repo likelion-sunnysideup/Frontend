@@ -10,7 +10,6 @@ import {
   SaveBtnImg,
 } from './Cloth';
 
-import Filter from '../Filter/Filter.jsx';
 
 import clothImg from '../../styles/assets/bonobono.jpg';
 import Loading from '../../components/Loading/Loading.jsx';

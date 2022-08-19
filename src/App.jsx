@@ -39,6 +39,7 @@ import Save from './routes/Save/Save.jsx';
 import Account from './routes/Account/Account.jsx';
 import ScrollUp from './components/ScrollUp/ScrollUp.jsx';
 import Login from './routes/Login/Login.jsx';
+
 import axios from 'axios';
 
 import sunImage from '../src/styles/assets/sun.png'
@@ -201,11 +202,10 @@ function App(props) {
     } catch(error) {
       console.log("============================getWeather============================");
       console.log(error);
-    }
-};
-
+    })
+  };
+  
   const [login, setLogin] = useState(false);
-
   return (
         <GlobalPart>
         { login ? (
@@ -301,9 +301,9 @@ function App(props) {
             </CenterPart>
           </>
           ):(
-            <>
-              <Login></Login>
-            </>
+            <Routes>
+              <Route path="/" element={<Login setLogin={setLogin}/>}></Route>
+            </Routes>
           )}
         </GlobalPart>
   );

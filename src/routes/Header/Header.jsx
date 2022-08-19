@@ -31,8 +31,8 @@ function Header() {
   const [save, setSave] = useState(false);
   const [account, setAccount] = useState(false);
   
-  const goHome = () => {
-    navigate('/')
+  const goMain = () => {
+    navigate('/main')
     setPost(false);
     setSave(false);
     setAccount(false);
@@ -66,7 +66,7 @@ function Header() {
           <LogoBackground>
             <LogoImg src={logoImage}/>
           </LogoBackground>
-          <WebTitle onClick={goHome}>SUNNY side UP!</WebTitle>
+          <WebTitle onClick={goMain}>SUNNY side UP!</WebTitle>
         </LogoContainer>
 
         <MenuContainerBox>
