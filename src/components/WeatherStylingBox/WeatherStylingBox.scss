@@ -62,3 +62,25 @@ ul.react-datepicker__time-list {
 .react-datepicker--time-only {
   border: 1.3px solid #c9c9c9;
 }
+
+.react-datepicker__day {
+  &--selected {
+    background-color: #f3c20b;
+    &:hover {
+      background-color: #f3c20b;
+    }
+  }
+}
+
+
+.react-datepicker__day--today{
+  background-color: #c9c9c9;;
+  color: #ffffff;
+  border-radius: 0.3rem;
+  &--selected {
+    background-color: #f3c20b;
+    &:hover{
+      background-color: #f3c20b;
+    }
+  }
+}
