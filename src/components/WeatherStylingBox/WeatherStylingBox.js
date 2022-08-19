@@ -179,7 +179,7 @@ export const MainIconImg = styled.img`
 
 // 메인 > 오늘 날씨 > 날씨 정보
 export const MainInfoContainer = styled.div`
-  width: 70%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -228,6 +228,24 @@ export const MainStateBox = styled.div`
     font-size: 0.4em;
   }
   /*background-color: orange;*/
+`;
+
+// 메인 > 오늘 날씨 > 최저 최고 기온
+export const MainTempBoundBox = styled.div`
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  /*background-color: red;*/
+`;
+
+export const TempBound = styled.div`
+  font-weight: bold;
+  font-size: 0.8em;
+  
+  /*background-color: yellow;*/
 `;
 
 // 메인 > 오늘 날씨 > 강수량

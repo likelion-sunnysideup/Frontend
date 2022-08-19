@@ -18,6 +18,8 @@ import {
   MainDayCityBox,
   MainTemperatureBox,
   MainStateBox,
+  MainTempBoundBox,
+  TempBound,
   MainRainfallBox,
   StyleBackground,
   StyleImgBox,
@@ -37,6 +39,14 @@ import topImg from '../../styles/assets/top.png'
 import bottomImg from '../../styles/assets/bottom.png'
 import shoesImg from '../../styles/assets/shoes.png'
 
+import {
+  calcMinuteToMilliSec,
+  calcHourToMilliSec,
+  calcDayToMilliSec,
+  toKrCurTime
+} from '../../utils/time'
+import getWhetherInfo from '../../utils/WhetherApiParser';
+
 const stylingText = {
   text:
   `
@@ -46,13 +56,23 @@ const stylingText = {
   `
 };
 
-function WeatherStylingBox({ lat, lon, addressName, temp }) {
+function WeatherStylingBox({ lat, lon, addressName, setMainPageWhether }) {
   const [loading, setLoading] = useState(true);
 
   const [showStyle, setShowStyle] = useState(false);
 
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+
+  const filterPassedDate = (time) => {
+    const currentTime = new Date();
+    const fcstMaximumTime = new Date(currentTime.getTime() + 6 * 24 * 60 * 60 * 1000);
+    const selectedTime = new Date(time);
+
+    let isOverToday = parseInt((currentTime.getTime() + (9 * calcHourToMilliSec())) / (24 * 60 * 60 * 1000)) <= parseInt((selectedTime.getTime() + (9 * calcHourToMilliSec())) / (24 * 60 * 60 * 1000));
+    let isUnderfcstMaximumDay = parseInt((fcstMaximumTime.getTime() + (9 * calcHourToMilliSec())) / (24 * 60 * 60 * 1000)) >= parseInt((selectedTime.getTime() + (9 * calcHourToMilliSec())) / (24 * 60 * 60 * 1000));
+    return isOverToday && isUnderfcstMaximumDay;
+  };
 
   const filterPassedTime = (time) => {
     const currentTime = new Date();
@@ -61,24 +81,16 @@ function WeatherStylingBox({ lat, lon, addressName, temp }) {
   };
   
   // 날씨 관리
-  const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-  const [cloud, setCloud] = useState();
-  const [rain, setRain] = useState();
+  const [whether, setWhether] = useState(null);
+  useEffect(() => {
+    setMainPageWhether(whether);
+  }, [whether])
 
-  const getWeather = async() => {
-    await axios
-    .get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`)
-    .then((res) => {
-      console.log(res.data);
-      setCloud(res.data.current.clouds);
-      setRain(res.data.daily[0].rain);
-      setLoading(false);
-    })
-    .catch((error)=> {
-      console.log("============================getWeather============================");
-      console.log(error);
-    })
+  const getWeather = () => {
+    setWhether(getWhetherInfo(startTime, endTime, lon, lat));
+    setLoading(false);
   };
+
 
   return (
     <>
@@ -92,11 +104,11 @@ function WeatherStylingBox({ lat, lon, addressName, temp }) {
                     selected={startTime}
                     onChange={(time) => setStartTime(time)}
                     showTimeSelect
-                    showTimeSelectOnly
                     timeIntervals={60}
                     timeCaption='Time'
-                    dateFormat='aa h:mm'
+                    dateFormat='MM.dd. hh:mmaa'
                     placeholderText='선택'
+                    filterDate={filterPassedDate}
                     filterTime={filterPassedTime}
                   />
                 </OutTimeBox>
@@ -109,11 +121,11 @@ function WeatherStylingBox({ lat, lon, addressName, temp }) {
                     selected={endTime}
                     onChange={(time) => setEndTime(time)}
                     showTimeSelect
-                    showTimeSelectOnly
                     timeIntervals={60}
                     timeCaption='Time'
-                    dateFormat='aa h:mm'
+                    dateFormat='MM.dd. hh:mmaa'
                     placeholderText='선택'
+                    filterDate={filterPassedDate}
                     filterTime={filterPassedTime}
                 />
                 </InTimeBox>
@@ -127,22 +139,20 @@ function WeatherStylingBox({ lat, lon, addressName, temp }) {
                 }}>추천 코디 확인하기</StyleCheckBtn>  
             </StyleCheckBackground>
 
+
             <MainTodayWeatherContainer>
               <MainTodayWeatherBackground>
-
-                <MainIconContainer>
-                  <MainIconBox>
-                    <MainIconImg src={sunImg}/>
-                  </MainIconBox>
-                </MainIconContainer>
                 { loading ? (
                   null
                   ):(
                     <MainInfoContainer>
                       <MainDayCityBox>{addressName}</MainDayCityBox>
-                      <MainTemperatureBox>{temp}℃</MainTemperatureBox>
-                      <MainStateBox>흐림 {cloud}%</MainStateBox>
-                      <MainRainfallBox>강수량 {rain}mm</MainRainfallBox>
+                      <MainTemperatureBox>{whether.taAvg}℃</MainTemperatureBox>
+                      <MainStateBox>{whether.capsule}</MainStateBox>
+                      <MainTempBoundBox>
+                        <TempBound>최저 {whether.taMin}℃</TempBound>
+                        <TempBound>최고 {whether.taMax}℃</TempBound>
+                      </MainTempBoundBox>
                     </MainInfoContainer>
                 )}
               </MainTodayWeatherBackground>
